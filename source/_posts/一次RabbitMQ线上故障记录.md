@@ -1,7 +1,7 @@
 ---
 title: 一次RabbitMQ线上故障记录
 date: 2018-04-19 21:08:49
-tags:
+tags: mq
 ---
 今天在线上环境中出现了一个很奇怪的RabbitMQ故障，特意记录下。
 * 出现现象
@@ -17,6 +17,7 @@ tags:
 ## 排查过程
 ### 查找日志
 由于多次启动RabbitMQ失败，所以去查看RabbitMQ日志，由于安装RabbitMQ时并未改变日志路径，所以日志输出在默认路径	%APPDATA%\RabbitMQ。
+https://www.rabbitmq.com/relocate.html
 {% asset_img 一次RabbitMQ线上故障记录-1.png 一次RabbitMQ线上故障记录 %}
 
 ### 错误定位

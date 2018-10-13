@@ -1,5 +1,6 @@
 ---
 title: 使用kubeadm安装Kubernetes
+tags: devops
 ---
 因为业务要求，需要搭建一个容器平台，选择的Kubernetes+Docker搭建集群。
 Kubernetes有多种安装方式，因为使用的不是Google Cloud和AWS，使用的是阿里云，所以采用kubeadm安装Kubernetes集群。
