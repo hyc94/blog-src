@@ -2,6 +2,7 @@
 title: 一次RabbitMQ线上故障记录
 date: 2018-04-19 21:08:49
 tags: mq
+categories: 运维
 ---
 今天在线上环境中出现了一个很奇怪的RabbitMQ故障，特意记录下。
 * 出现现象
