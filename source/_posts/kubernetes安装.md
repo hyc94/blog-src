@@ -1,5 +1,6 @@
 ---
 title: 使用kubeadm安装Kubernetes
+date: 2018-01-20 21:51:24
 tags: devops
 categories: 运维
 ---
