@@ -13,6 +13,8 @@ Python编程：从入门到实践-学习笔记系列第一篇
 * 用户输入和while循环
 * 函数
 * 类
+* 文件和异常
+* 测试代码
 
 ------
 
@@ -26,8 +28,6 @@ Python编程：从入门到实践-学习笔记系列第一篇
 2. 添加元素：append()末尾新增，insert()在指定位置新增
 3. 删除元素：del语句删除，pop()删除任何位置的元素，remove()删除值
 4. 组织列表：sort()永久性排序，sorted()临时排序，reverse()反转列表
-
-
 
 #### 操作列表
 
@@ -73,7 +73,7 @@ Python编程：从入门到实践-学习笔记系列第一篇
 4. 任意数量的实参：*keys；任意数量的关键字实参：**keys（创建一个keys的空字典）
 5. 模块使扩展名为.py的文件；导入模块import module，调用被导入模块的函数使用module.function()
 6. 导入特定的函数：`from module import function1, function2, function3`
-7. 使用as给函数指定别名：`from module import function1 as fn`；使用as给模块指定别名：`import module as  mn`
+7. 使用as给函数指定别名：`from module import function1 as fn`；使用as给模块指定别名：`import module as mn`
 8. 导入模块中所有函数：`from module import *`（尽量不要，可能重名）
 
 ## 类
@@ -87,3 +87,35 @@ Python编程：从入门到实践-学习笔记系列第一篇
 2. 变量前有self作为前缀，这样的变量称为属性
 3. 修改属性的值：直接修改属性的值；通过方法修改属性的值；通过方法对属性的值进行递增
 4. 继承：class SubClass(SuperClass)，在子类的`__init__()`中调用`super().__init__()`进行关联
+5. 从模块导入类：`from car import Car, ElectricCar`
+6. 导入模块中的所有类：`from module import *`，这种方式不推荐，因为可能引发名称方面的问题
+
+## 文件和异常
+
+1. `open()`函数打开文件，关键字with在不再需要访问文件时自动关闭文件，不需要显示调用`close()`
+
+   ```python
+   with open('test.txt') as file_obj
+   ```
+
+2. `read()`读取文件的所有内容，`read()`到达文件末尾是返回一个空字符串，会显示成一个空行
+
+3. 逐行读取：每行的末尾都有一个看不见的换行符
+
+   ```python
+   for line in file_obj:
+   
+   	print(line.rstrip())
+   ```
+
+4. `readlines()`从文件中读取每一行，并存储在一个列表
+5. `open()`两个实参，第一个实参是文件名称，第二个实参是模式：读取模式（'r'）、写入模式（'w'）、附加模式（'a'）、读取和写入模式（'r+'），默认只读打开文件
+6. `write()`不会在你写入的文本末尾添加换行符
+7. 使用try-except代码块处理异常；try-except-else：try语句放可能引发异常的代码，try成功执行后需要运行的代码放在else代码块
+8. pass语句用来在失败时一声不吭
+9. `json.dump()`存储数据，两个实参：要存储的数据和可用于存储数据的文件对象；`json.load()`加载数据文件
+
+## 测试代码
+
+1. Python标准库中的模块unittest提供了代码测试工具
+2. 首先导入unittest模块和要测试的函数，创建测试类并在命名中包含Test，这个类必须继承unittest.TestCase类；
