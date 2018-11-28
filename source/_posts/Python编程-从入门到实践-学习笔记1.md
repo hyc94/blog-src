@@ -118,4 +118,15 @@ Python编程：从入门到实践-学习笔记系列第一篇
 ## 测试代码
 
 1. Python标准库中的模块unittest提供了代码测试工具
-2. 首先导入unittest模块和要测试的函数，创建测试类并在命名中包含Test，这个类必须继承unittest.TestCase类；
+
+2. 首先导入unittest模块和要测试的函数或类，创建测试类并在命名中包含Test，这个类必须继承`unittest.TestCase`类；
+
+   运行测试类时，所有以test_打头的方法都将自动运行；
+
+   使用**断言**方法来核实得到的结果与预期结果是否一致；
+
+   `unittest.main()`运行文件中的测试。
+
+3. 常用断言方法：assertEqual(a, b)、assertNotEqual(a, b)、assertTrue(x)、assertFalse(x)、assertIn(item, list)、assertNotIn(item, list)
+
+4. 方法setUp()：首先运行，再运行各个test_打头的方法
