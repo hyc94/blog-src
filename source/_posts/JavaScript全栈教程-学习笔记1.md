@@ -9,6 +9,7 @@ JavaScript全栈教程-学习笔记系列第一篇
 
 * 快速入门
 * 函数
+* 标准对象
 
 ------
 
@@ -57,3 +58,39 @@ JavaScript全栈教程-学习笔记系列第一篇
    - generator由`function*`定义，并且除了`return`语句，还可以用`yield`多次返回
    - 调用generator对象有两个方法，一是不断调用`next()`方法，每次遇到`yield x;`，返回一个对象{value: x, done: true/false}；二是直接用`for ... of`循环迭代generator对象
    - generator作用：用一个对象来保存状态；把异步回调代码变成"同步代码"
+
+## 标准对象
+
+1. `null`、`Array`的类型也是`object`，无法用`typeof`区分出`null`、`Array`和普通的object--`{}`
+
+2. 包装对象用`new`创建，包装对象和原始值用`===`比较会返回`false`，所以尽量不要使用包装对象，尤其是针对`string`类型
+
+3. 如果使用`Number`、`Boolean`和`String`时没有写`new`，`Number()`、`String()`等会被当做普通函数，把数据转换为`number`、`boolean`和`string`类型
+
+4. 用`parseInt()`或`parseFloat()`来转换任意类型到`number`；用`String()`来转换任意类型到`string`，或者调用对象的`toString()`方法，注意`number`对象调用`toString()`报SyntaxError，要特殊处理一下：
+
+   ```javascript
+   123..toString();  //'123'，注意是两个点！
+   
+   (123).toString();
+   ```
+
+5. `typeof`操作符可以判断出`number`、`boolean`、`string`、`function`、`undefined`；判断`Array`要使用`Array.isArray(arr)`；判断`null`要使用`myVar === null`
+
+6. 判断全局变量是否存在`typeof window.myVar === 'undefined'`；函数内部变量是否存在使用`typeof myVar === 'undefined'`
+
+7. Date对象月份值从0开始，0=1月...，11=12月
+
+8. 创建Date对象的3种方式：
+
+   ```javascript
+   var d1 = new Date(2015, 5, 19, 20, 15, 30, 123)
+   
+   var d2 = Date.parse('2015-06-24T19:49:22.875+08:00')
+   
+   var d3 = new Date(1435146562875)
+   ```
+
+   使用Date.parse()时传入的字符串使用实际月份01~12，转换成Date对象使用getMonth()获取的月份是0~11
+
+9. `d.toLocaleString()`：本地时间，显示的字符串与操作系统设定的格式有关，`d.toUTCString()`：UTC时间
