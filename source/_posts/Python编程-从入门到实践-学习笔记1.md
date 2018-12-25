@@ -2,7 +2,7 @@
 title: 'Python编程:从入门到实践-学习笔记1'
 date: 2018-11-22 21:19:37
 tags: python
-categories: 后端
+categories: 学习笔记
 ---
 
 Python编程：从入门到实践-学习笔记系列第一篇

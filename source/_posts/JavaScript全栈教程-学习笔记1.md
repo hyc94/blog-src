@@ -2,7 +2,7 @@
 title: JavaScript全栈教程-学习笔记1
 date: 2018-11-20 21:51:24
 tags: JavaScript
-categories: 前端
+categories: 学习笔记
 ---
 
 JavaScript全栈教程-学习笔记系列第一篇
