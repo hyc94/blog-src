@@ -1,7 +1,7 @@
 ---
 title: 使用kubeadm安装Kubernetes
 date: 2018-01-20 21:51:24
-tags: devops
+tags: k8s
 categories: 运维
 ---
 因为业务要求，需要搭建一个容器平台，选择的Kubernetes+Docker搭建集群。
