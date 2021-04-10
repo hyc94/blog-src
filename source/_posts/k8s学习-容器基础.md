@@ -63,11 +63,21 @@ rootfs 只是一个操作系统所包含的文件、配置和目录，并不包�
 
 由于 rootfs 里打包的不只是应用，而是整个操作系统的文件和目录，也就意味着，应用以及它运行所需要的所有依赖，都被封装在了一起。对一个应用来说，操作系统本身才是它运行所需要的最完整的“依赖库”。
 
-如果每次更新都重新制作rootfs，将会变得很麻烦。所以Docker做了一个小小的创新，Docker 在镜像的设计中，引入了层（layer）的概念。也就是说，用户制作镜像的每一步操作，都会生成一个层，也就是一个增量 rootfs。这个想法其实是用到了一种叫作联合文件系统（Union File System）的能力。
+如果每次更新都重新制作rootfs，将会变得很麻烦。所以Docker做了一个小小的创新，Docker 在镜像的设计中，引入了层（layer）的概念。也就是说，用户制作镜像的每一步操作，都会生成一个层，也就是一个增量 rootfs。这个想法其实是用到了一种叫作联合文件系统UnionFS（Union File System）的能力。
+
+AuFS 联合文件系统的rootfs由三部分组成：只读层（ro+wh）、Init层（ro+wh）、可读写层(rw)
+* 只读层：它们的挂载方式都是只读的（ro+wh，即 readonly+whiteout）
+* 可读写层： rootfs 最上面的一层，它的挂载方式为：rw，即 read write。一旦在容器里做了写操作，修改产生的内容就会以增量的方式出现在这个层中。为了实现删除操作，会在可读写层创建一个 whiteout 文件，把只读层里的文件“遮挡”起来。这个功能，就是“ro+wh”的挂载方式，即只读 +whiteout 的含义。
+* Init层：它是一个以“-init”结尾的层，夹在只读层和读写层之间。Init 层是 Docker 项目单独生成的一个内部层，专门用来存放 /etc/hosts、/etc/resolv.conf 等信息。
 
 
 ## 其他
 1. 容器是一个单进程，但是容器里还可以运行其他命令、进程，这些进程实际上是子进程。容器的单进程意思不是只能运行一个进程，而是只有一个进程是可控的。
-2. docker里面跑的进程不是docker的子进程，是是entrypoint进程的子进程。docker基本上是旁路控制的作用。
+2. docker里面跑的进程不是docker的子进程，是entrypoint进程的子进程。docker基本上是旁路控制的作用。
 3. cgroups目录留下来的文件清理：先umount卸载，然后删除
 4. k8s中的/etc/hosts文件配置，可以通过Pod定义中的`hostAliases`字段向Pod的 /etc/hosts 添加条目。该文件已经被 Kubelet 管理起来，任何对该文件手工修改的内容，都将在 Kubelet 重启容器或者 Pod 重新调度时被覆盖
+5. docker如何修改镜像内的文件：采用copy-on-write（CoW）机制，只在需要写时才去复制。CoW技术可以让所有的容器共享image的文件系统，只有当要对文件进行写操作时，才从image里把要写的文件复制到自己的文件系统进行修改。容器所做的写操作都是在复本上进行，并不会修改image的源文件，每个容器修改的都是自己的复本，相互隔离，相互不影响。使用CoW可以有效的提高磁盘的利用率。
+6. docker支持的UnionFS实现：aufs, device mapper, btrfs, overlayfs, vfs, zfs。aufs是ubuntu 常用的，device mapper 是 centos，btrfs 是 SUSE，overlayfs ubuntu 和 centos 都会使用，现在最新的 docker 版本中默认两个系统都是使用的 overlayfs，vfs 和 zfs 常用在 solaris 系统。
+7. docker的scratch：万能的base镜像，本身就是个空镜像。
+8. k8s有GC功能，会清理未使用的镜像和容器：https://kubernetes.io/zh/docs/concepts/cluster-administration/kubelet-garbage-collection/
+9. 如果应用依赖某个特定内核版本才有的特性，这个容器是无法跨平台的。有LinuxKit这种类似的方案：LinuxKit就是kernel+busybox实现的一个微缩linux系统，其中直接安装了containerd和runc服务。其他服务全部都使用容器启动。
