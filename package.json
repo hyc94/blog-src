@@ -29,7 +29,7 @@
     "hexo-server": "^0.2.0",
     "lunr": "github:mamboer/lunr.js",
     "markdown-it-katex": "^2.0.3",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "node-sass": "^4.10.0",
     "object-assign": "^4.1.1"
   }
